@@ -1,0 +1,47 @@
+import base64
+import json
+import os
+import pickle
+import sys
+import warnings
+
+warnings.filterwarnings("ignore")
+import xgboost as xgb
+from dotenv import load_dotenv
+from google.cloud import pubsub_v1, storage
+
+load_dotenv()
+
+publisher = pubsub_v1.PublisherClient()
+PROJECT_ID = os.getenv("PROJECT_ID")
+TOPIC_NAME = os.getenv("BACKEND_PULL_STREAM")
+MODEL_BUCKET = os.getenv("MODEL_BUCKET")
+DATA_BUCKET = os.getenv("DATA_BUCKET")
+
+
+
+def download_files():
+    """
+    Download Files from GS Bucket"""
+    storage_client = storage.Client()
+
+    model_bucket = storage_client.bucket(MODEL_BUCKET)
+    data_bucket = storage_client.bucket(DATA_BUCKET)
+
+    preprocessors_blob = model_bucket.blob("preprocessors.pkl")
+    model_blob = model_bucket.blob("model.xgb")
+    data_blob = bucke
+
+    preprocessor_blob.download_to_filename("/tmp/preprocessor.py")
+    dv_blob.download_to_filename("/tmp/dv.pkl")
+    model_blob.download_to_filename("/tmp/model.xgb")
+
+    preprocessor_full_blob = bucket.get_blob("model/preprocessor.py")
+    model_full_blob = bucket.get_blob("model/model.xgb")
+
+    preprocessor_modif_date = preprocessor_full_blob.updated
+    model_modif_date = model_full_blob.updated
+
+    last_modif = min(preprocessor_modif_date, model_modif_date)
+    return last_modif
+

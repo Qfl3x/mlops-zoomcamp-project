@@ -1,0 +1,47 @@
+###
+### A complete description of a Prefect Deployment for flow 'batch-analyze'
+###
+name: analyze
+description: null
+version: 724a719617d7a1a88454442ebf43e938
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: batch-analyze
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command:
+  - python
+  - -m
+  - prefect.engine
+  stream_output: true
+  _block_document_id: 173c533b-1e91-4786-a6c1-e7d3f55a0eca
+  _block_document_name: anonymous-06c4eedf-055d-42c2-8d1e-e097020b0f9a
+  _is_anonymous: true
+storage:
+  bucket_path: project-prefect
+  service_account_info: null
+  project: null
+  _is_anonymous: true
+  _block_document_name: anonymous-4b917427-dcb2-44ea-8e1d-ff203e079889
+  _block_document_id: 088bdcd5-dd55-4c1f-bf5d-f2470611774c
+  _block_type_slug: gcs
+path: null
+entrypoint: batch_monitoring.py:batch_analyze
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null

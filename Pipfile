@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+mlflow = "*"
+google-cloud-storage = "*"
+sklearn = "*"
+xgboost = "*"
+hyperopt = "*"
+google-cloud = "*"
+gcsfs = "*"
+matplotlib = "*"
+functions-framework = "*"
+prefect = "*"
+pyarrow = "*"
+evidently = "*"
+pymongo = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

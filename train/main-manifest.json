@@ -1,0 +1,11 @@
+{
+    "flow_name": "main",
+    "import_path": "./train.py:main",
+    "parameter_openapi_schema": {
+        "title": "Parameters",
+        "type": "object",
+        "properties": {},
+        "required": null,
+        "definitions": null
+    }
+}

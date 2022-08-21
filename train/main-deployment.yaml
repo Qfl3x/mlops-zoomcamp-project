@@ -1,0 +1,47 @@
+###
+### A complete description of a Prefect Deployment for flow 'main'
+###
+name: main
+description: null
+version: 356d265fb16ae30cee164ce76242cd70
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: main
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command:
+  - python
+  - -m
+  - prefect.engine
+  stream_output: true
+  _block_document_id: de83e680-db62-45e0-92b8-4532611ced39
+  _block_document_name: anonymous-2ea61da6-dcbc-4a0e-ada3-9d5d9a938ec5
+  _is_anonymous: true
+storage:
+  bucket_path: project-prefect
+  service_account_info: null
+  project: null
+  _is_anonymous: true
+  _block_document_name: anonymous-088efc5f-51b3-49c2-a10c-e6652e06aa00
+  _block_document_id: 944b9a2f-03fa-4e24-bbb2-36d6599e0f96
+  _block_type_slug: gcs
+path: null
+entrypoint: train.py:main
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties: {}
+  required: null
+  definitions: null

@@ -1,0 +1,6 @@
+scikit-learn==1.1.2
+xgboost==1.6.1
+pyarrow==9.0.0
+pandas==1.4.3
+google-cloud-storage==2.5.0
+python-dotenv
