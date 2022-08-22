@@ -32,11 +32,14 @@ jobs:
       - name: Setup credentials
         run: |
           echo  '${{ secrets.GCP_TERRAFORM_CREDENTIALS }}' > infrastructure/terraform-account.json
-      - name: TF plan
+      - name: TF init
         id: plan
         working-directory: "infrastructure"
         run: |
           terraform init -backend-config="prefix="tfstate-prod""
-          terraform plan --var-file vars/prod.tfvars
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_TERRAFORM_CREDENTIALS}}
+      - name: TF plan
+        id: plan
+        run: |
+          make plan-prod
