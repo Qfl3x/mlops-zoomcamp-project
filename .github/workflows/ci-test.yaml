@@ -39,6 +39,6 @@ jobs:
         id: init
         run: |
           cd infrastructure && terraform init -backend-config="prefix="tfstate-prod""
-          make plan-prod
+          cd ../ && make plan-prod
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_TERRAFORM_CREDENTIALS}}
