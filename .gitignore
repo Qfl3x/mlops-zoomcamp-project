@@ -11,6 +11,9 @@ terraform-account.json
 # Terraform provider files
 **/.terraform
 
+# Tmp's
+**/tmp
+
 # Evidently Report
 evidently_report.html
 
