@@ -1,1 +1,1 @@
-prefix = "terraform-mlops-prod"
+prefix = "mlops-project-prod"
