@@ -1,18 +1,19 @@
-import sys
 import os
 import pickle
-import pandas as pd
+import sys
+
 import numpy as np
-
-import mlflow
+import pandas as pd
 from mlflow.tracking import MlflowClient
-
-from sklearn.preprocessing import StandardScaler
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import fbeta_score
+from sklearn.preprocessing import StandardScaler
 
+import mlflow
 
-REMOTE_TRACKING_IP = os.getenv("REMOTE_IP")
+MODEL_BUCKET = os.getenv("MODEL_BUCKET")
+
+REMOTE_TRACKING_IP = os.getenv("REMOTE_IP", "localhost")
 MLFLOW_TRACKING_URI = f"http://{REMOTE_TRACKING_IP}:5000"
 
 client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
@@ -94,7 +95,7 @@ loaded_model = mlflow.pyfunc.load_model(logged_model)
 # Predict on a Pandas DataFrame.
 y_pred = loaded_model.predict(X_test)
 
-test_score = fbeta_score(y_test, y_pred, beta=0.2)
+test_score = fbeta_score(y_test, y_pred, beta=5)
 try:
     client.create_registered_model(name=MODEL_NAME)
 except:
@@ -113,10 +114,10 @@ client.transition_model_version_stage(
 # Update Model to bucket
 
 mlflow.artifacts.download_artifacts(
-    artifact_uri=f"runs:/{run_id}/model/preprocessors.pkl", dst_path="./model"
+    artifact_uri=f"runs:/{run_id}/model/preprocessors.pkl", dst_path="../model"
 )
 mlflow.artifacts.download_artifacts(
-    artifact_uri=f"runs:/{run_id}/model/model.xgb", dst_path="./model"
+    artifact_uri=f"runs:/{run_id}/model/model.xgb", dst_path="../model"
 )
 
-os.system("gsutil cp model/* gs://mlops-project-model/")
+# os.system(f"gsutil cp model/* gs://{MODEL_BUCKET}/")

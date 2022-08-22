@@ -2,7 +2,7 @@
 infrastructure/
 **/.terraform/
 
- MLflow Database
+# MLflow Database
 mlflow.db
 
 # GCP Credentials

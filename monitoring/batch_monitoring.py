@@ -4,23 +4,28 @@ import json
 import os
 import pickle
 
-import xgboost as xgb
 import pandas as pd
-from prefect import flow, task
-from pymongo import MongoClient
 import pyarrow.parquet as pq
-
+import xgboost as xgb
 from evidently import ColumnMapping
-
 from evidently.dashboard import Dashboard
-from evidently.dashboard.tabs import DataDriftTab, ClassificationPerformanceTab
-
+from evidently.dashboard.tabs import ClassificationPerformanceTab, DataDriftTab
 from evidently.model_profile import Profile
 from evidently.model_profile.sections import (
-    DataDriftProfileSection,
     ClassificationPerformanceProfileSection,
+    DataDriftProfileSection,
 )
+from pymongo import MongoClient
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from sklearn.metrics import fbeta_score
 
+from prefect import flow, task
+
+DATA_BUCKET = os.getenv("DATA_BUCKET")
+SENDGRID_INTEGRATION = os.getenv("SENDGRID_INTEGRATION", False)
+if SENDGRID_INTEGRATION != False:
+    SENDGRID_INTEGRATION = True
 
 categorical = [
     "Gender",
@@ -86,9 +91,23 @@ def load_reference_data(filename):
 def fetch_data():
     """
     Gets Output data from the GCS bucket, keeps Customer ID"""
-    os.system("gsutil cp gs://mlops-project-data/prediction.csv ./data/prediction.csv")
+    os.system(f"gsutil cp gs://{DATA_BUCKET}/prediction.csv ./data/prediction.csv")
     df = pd.read_csv("./data/prediction.csv")
     return df
+
+
+@task
+def assess_fbeta(ref_data, data):
+    y_true = data[target].tolist()
+    y_pred = data["churn_prediction"].tolist()
+
+    ref_y_true = ref_data[target].tolist()
+    ref_y_pred = ref_data["churn_prediction"].tolist()
+
+    ref_fbeta = fbeta_score(ref_y_true, ref_y_pred, beta=5)
+
+    data_fbeta = fbeta_score(y_true, y_pred, beta=5)
+    return ref_fbeta - data_fbeta
 
 
 @task
@@ -124,10 +143,31 @@ def save_html_report(result):
     result[1].save("/home/qfl3x/project/monitoring/evidently_report.html")
 
 
+@task
+def send_email(score_diff):
+
+    message = Mail(
+        from_email="ma.chettouh1@gmail.com",
+        to_emails="ma.chettouh1@gmail.com",
+        subject="ALERT: FBeta score too low.",
+        html_content=f"fbeta score difference: {score_diff}",
+    )
+    try:
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
+
+
 @flow
 def batch_analyze():
-    # upload_target("./data/prediction.csv")
     ref_data = load_reference_data("./data/train.csv")
     data = fetch_data()
     result = run_evidently(ref_data, data)
     save_html_report(result)
+    fbeta_diff = assess_fbeta(ref_data, data)
+    if fbeta_diff > 0.15 and SENDGRID_INTEGRATION:
+        send_email(score_diff)

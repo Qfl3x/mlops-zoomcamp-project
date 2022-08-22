@@ -4,8 +4,8 @@ import os
 import pickle
 import sys
 
-import xgboost as xgb
 import pandas as pd
+import xgboost as xgb
 from dotenv import load_dotenv
 from google.cloud import storage
 
@@ -107,10 +107,13 @@ def endpoint(event, context):
     Takes the event and outputs the prediction and sends it to the Pull stream"""
     # ride = base64.b64decode(event["data"]).decode("utf-8")
     # ride = json.loads(ride)
-    download_files()
+    if event["data"] != "debug":
+        download_files()
+
     df = read_data()
     X = preprocess_data(df)
     preds = predict(X)
     df["churn_prediction"] = preds
     df.to_csv("/tmp/prediction.csv")
-    upload_output()
+    if event["data"] != "debug":
+        upload_output()

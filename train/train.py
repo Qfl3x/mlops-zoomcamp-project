@@ -6,28 +6,24 @@ import time
 import warnings
 
 warnings.filterwarnings("ignore")
-import numpy as np
-import pandas as pd
 import pickle
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.feature_extraction import DictVectorizer
-
+import numpy as np
+import pandas as pd
 import xgboost as xgb
-
-from hyperopt import fmin, tpe, hp, STATUS_OK, Trials, space_eval
+from hyperopt import STATUS_OK, Trials, fmin, hp, space_eval, tpe
 from hyperopt.pyll import scope
-
-from sklearn.metrics import fbeta_score
-
-import mlflow
 from mlflow.entities import ViewType
 from mlflow.tracking import MlflowClient
-
-from prefect import flow, task
 from prefect.blocks.system import String
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.metrics import fbeta_score, recall_score
+from sklearn.preprocessing import StandardScaler
 
-REMOTE_TRACKING_IP = os.getenv("REMOTE_IP")
+import mlflow
+from prefect import flow, task
+
+REMOTE_TRACKING_IP = os.getenv("REMOTE_IP", "localhost")
 MLFLOW_TRACKING_URI = f"http://{REMOTE_TRACKING_IP}:5000"
 
 client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
@@ -127,10 +123,11 @@ def hyperoptimizer(X_train, y_train, X_val, y_val):
             model.fit(X_train, y_train)
             y_pred_probs = model.predict(X_val)
             y_pred = predict_binary(y_pred_probs)
-            fbeta = fbeta_score(y_val, y_pred, beta=0.2)
+            fbeta = fbeta_score(y_val, y_pred, beta=5)
             precision = fbeta_score(y_val, y_pred, beta=0)
             mlflow.log_metric("fbeta", fbeta)
             mlflow.log_metric("precision", precision)
+            mlflow.log_metric("recall", recall_score(y_val, y_pred))
 
         return {"loss": -fbeta, "status": STATUS_OK}
 
@@ -162,10 +159,11 @@ def train_and_log_model(params, X_train, y_train, X_val, y_val, tag):
         end_time = time.time()
         inference_time = end_time - start_time
         y_pred = predict_binary(y_pred_probs)
-        fbeta = fbeta_score(y_val, y_pred, beta=0.2)
+        fbeta = fbeta_score(y_val, y_pred, beta=5)
         precision = fbeta_score(y_val, y_pred, beta=0)
         mlflow.log_metric("fbeta", fbeta)
         mlflow.log_metric("precision", precision)
+        mlflow.log_metric("recall", recall_score(y_val, y_pred))
         mlflow.log_metric("Inference time", inference_time)
         mlflow.log_artifact("preprocessors.pkl", artifact_path="model")
 

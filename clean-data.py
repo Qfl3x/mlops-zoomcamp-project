@@ -1,10 +1,12 @@
 """
 Splits data into current and future sets, as well as split the current set into training, validation and test sets
 Copies the result to the train and monitoring directories as well as to the GCS bucket."""
-import pandas as pd
 import os
+
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
+DATA_BUCKET = os.getenv("DATA_BUCKET")
 df_orig = pd.read_csv("data/telecom_customer_churn.csv")
 
 df_orig["client_churned"] = df_orig["Customer Status"] == "Churned"
@@ -35,6 +37,6 @@ df_val.to_csv("data/val.csv")
 df_train.to_csv("data/train.csv")
 df_test.to_csv("data/test.csv")
 
-os.system("gsutil -m cp data/*.csv gs://mlops-project-data/")
+os.system(f"gsutil -m cp data/*.csv gs://{DATA_BUCKET}/")
 os.system("cp -r data/ train/")
 os.system("cp -r data/ monitoring/")

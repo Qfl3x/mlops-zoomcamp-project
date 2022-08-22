@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+markers = [
+        "online: Tests that require an up and running infrastructure and uploaded model",
+        "offline"
+]
+
+[tool.isort]
+profile="black"

@@ -1,0 +1,66 @@
+
+import base64
+import json
+import os
+import subprocess
+from pathlib import Path
+from google.cloud import storage
+
+load_dotenv()
+
+PROJECT_ID = os.getenv("PROJECT_ID")
+MODEL_BUCKET = os.getenv("MODEL_BUCKET")
+DATA_BUCKET = os.getenv("DATA_BUCKET")
+
+
+def download_files():
+    """
+    Download Files from GS Bucket"""
+    os.system("mkdir tmp")
+    storage_client_data = storage.Client()
+
+    data_bucket = storage_client_data.bucket(DATA_BUCKET)
+
+    data_blob = data_bucket.blob("future.csv")
+    data_blob.download_to_filename("/tmp/future.csv")
+
+
+def test_framework():
+
+    port = 8080
+
+    pubsub_message = {"data": {"data": ""}}
+
+    current_path = Path(os.path.dirname(__file__))
+
+    parent_path = current_path.parent
+    process = subprocess.Popen(
+        [
+            "functions-framework",
+            "--target",
+            "predict_duration",
+            "--signature-type",
+            "event",
+            "--port",
+            str(port),
+        ],
+        cwd=parent_path,
+        stdout=subprocess.PIPE,
+    )
+
+    url = f"http://localhost:{port}/"
+
+    retry_policy = Retry(total=6, backoff_factor=1)
+    retry_adapter = requests.adapters.HTTPAdapter(max_retries=retry_policy)
+
+    session = requests.Session()
+    session.mount(url, retry_adapter)
+
+    response = session.post(url, json=pubsub_message)
+
+    assert response.status_code == 200
+
+    # Stop the functions framework process
+    process.kill()
+    process.wait()
+    out, err = process.communicate()

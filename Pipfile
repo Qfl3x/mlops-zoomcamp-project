@@ -17,8 +17,15 @@ prefect = "*"
 pyarrow = "*"
 evidently = "*"
 pymongo = "*"
+sendgrid = "*"
+python-dotenv = "*"
 
 [dev-packages]
+pytest = "*"
+functions-framework = "*"
+black = "*"
+pre-commit = "*"
+isort = "*"
 
 [requires]
 python_version = "3.10"
