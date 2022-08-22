@@ -32,7 +32,7 @@ if SENDGRID_INTEGRATION != False:
 
 EMAIL = os.getenv("PERSONAL_EMAIL")
 
-PROJECT_PATH = os.getenv("PROJECT_ENV")
+PROJECT_PATH = os.getenv("PROJECT_PATH")
 categorical = [
     "Gender",
     "Zip Code",

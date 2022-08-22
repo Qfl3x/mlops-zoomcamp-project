@@ -34,8 +34,8 @@ storage:
   service_account_info: null
   project: null
   _is_anonymous: true
-  _block_document_name: anonymous-dd1259f5-d171-4c77-91e0-34d48afbeb15
-  _block_document_id: 6b48a929-c646-419e-8a4b-760effea3284
+  _block_document_name: anonymous-559012ce-2003-4161-ac3a-1238b617140d
+  _block_document_id: a2350f3f-8460-4b2e-9b4a-9e661366b721
   _block_type_slug: gcs
 path: null
 entrypoint: batch_monitoring.py:batch_analyze
