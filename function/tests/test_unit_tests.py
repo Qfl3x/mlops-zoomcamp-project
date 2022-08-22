@@ -46,7 +46,7 @@ def download_files():
     os.system("cp ./data/future.csv ./tmp")
 
 
-@pytest.mark.offline
+@pytest.mark.offlinenodata
 def test_preprocessors():
 
     download_files()
@@ -57,7 +57,7 @@ def test_preprocessors():
     os.system("rm -rf ./tmp/")
 
 
-@pytest.mark.offline
+@pytest.mark.offlinenodata
 def test_booster():
 
     download_files()
@@ -102,7 +102,7 @@ def predict(X):
     return predict_binary(booster.predict(X_DMatrix))
 
 
-@pytest.mark.offline
+@pytest.mark.offlinedata
 def test_preprocessing():
 
     download_files()
@@ -114,7 +114,7 @@ def test_preprocessing():
     os.system("rm -rf ./tmp/")
 
 
-@pytest.mark.offline
+@pytest.mark.offlinedata
 def test_prediction():
 
     download_files()

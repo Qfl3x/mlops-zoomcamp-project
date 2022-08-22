@@ -21,7 +21,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pipenv run pytest -m offline
+          pipenv run pytest -m offlinenodata
   tf-plan:
     runs-on: ubuntu-latest
     steps:

@@ -95,7 +95,7 @@ Next choose the model that suits you best based on the metrics provided and run 
 
 ## Testing:
 
-For Testing, two test masks exist: `online` and `offline`. `online` tests (ran with `pytest -m online`) will test the infrastructure, while `offline` tests will test everything else.
+For Testing, two test masks exist: `online`, `offlinenodata` and `offlinedata`. `online` tests (ran with `pytest -m online`) will test the infrastructure, while `offline` tests will test everything else. `offlinedata` will run data-dependent tests, while `offlinenodata` will run non-data-dependent tests.
 
 ## Destroying the Infrastructure:
 

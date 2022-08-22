@@ -12,7 +12,7 @@ from requests.packages.urllib3.util.retry import Retry
 load_dotenv()
 
 
-@pytest.mark.offline
+@pytest.mark.offlinedata
 def test_function_offline():
 
     # Initiate the files in tmp for the function
