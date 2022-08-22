@@ -7,6 +7,7 @@ import pickle
 import pandas as pd
 import pyarrow.parquet as pq
 import xgboost as xgb
+from dotenv import load_dotenv
 from evidently import ColumnMapping
 from evidently.dashboard import Dashboard
 from evidently.dashboard.tabs import ClassificationPerformanceTab, DataDriftTab
@@ -22,11 +23,16 @@ from sklearn.metrics import fbeta_score
 
 from prefect import flow, task
 
+load_dotenv()
+
 DATA_BUCKET = os.getenv("DATA_BUCKET")
 SENDGRID_INTEGRATION = os.getenv("SENDGRID_INTEGRATION", False)
 if SENDGRID_INTEGRATION != False:
     SENDGRID_INTEGRATION = True
 
+EMAIL = os.getenv("PERSONAL_EMAIL")
+
+PROJECT_PATH = os.getenv("PROJECT_ENV")
 categorical = [
     "Gender",
     "Zip Code",
@@ -140,15 +146,15 @@ def run_evidently(ref_data, data):
 
 @task
 def save_html_report(result):
-    result[1].save("/home/qfl3x/project/monitoring/evidently_report.html")
+    result[1].save(f"{PROJECT_PATH}/evidently_report.html")
 
 
 @task
 def send_email(score_diff):
 
     message = Mail(
-        from_email="ma.chettouh1@gmail.com",
-        to_emails="ma.chettouh1@gmail.com",
+        from_email=EMAIL,
+        to_emails=EMAIL,
         subject="ALERT: FBeta score too low.",
         html_content=f"fbeta score difference: {score_diff}",
     )

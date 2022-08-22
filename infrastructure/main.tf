@@ -40,28 +40,15 @@ MODEL_BUCKET=${var.prefix}-${var.model_bucket_name}
 DATA_BUCKET=${var.prefix}-${var.data_bucket_name}
 EOT
 
-  filename = "../.env-terraform"
+  filename = "../terraformenv"
 }
-
-resource null_resource "finalize_env_file" {
-  provisioner "local-exec" {
-    command = "cd ../ && cat baseenv .env-terraform > .env"
-  }
-  depends_on = [local_file.env_file]
-}
-
 resource null_resource "func_env_file" {
   provisioner "local-exec" {
-    command = "cd ../ && cp .env-terraform function/.env"
+    command = "cd ../ && cp terraformenv function/.env"
   }
   depends_on = [local_file.env_file]
 }
-resource null_resource "copy_env_file" {
-  provisioner "local-exec" {
-    command = "cd ../ && ./initiate_dotenvs.sh"
-  }
-  depends_on = [null_resource.finalize_env_file]
-}
+
 
 module "function" {
   source = "./modules/function"

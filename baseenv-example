@@ -1,0 +1,5 @@
+GOOGLE_APPLICATION_CREDENTIALS=/home/qfl3x/project/project-host.json
+GOOGLE_ACCOUNT_NAME=example@project-id.iam.serviceaccount.json
+REMOTE_IP=1.1.1.1
+SENDGRID_API_KEY=SG.kfklkmaslkdmalskdmalksdmalksmdalksmdalksdm
+PERSONAL_EMAIL=myemail@gmail.com

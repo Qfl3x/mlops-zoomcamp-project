@@ -37,6 +37,5 @@ df_val.to_csv("data/val.csv")
 df_train.to_csv("data/train.csv")
 df_test.to_csv("data/test.csv")
 
-os.system(f"gsutil -m cp data/*.csv gs://{DATA_BUCKET}/")
 os.system("cp -r data/ train/")
 os.system("cp -r data/ monitoring/")

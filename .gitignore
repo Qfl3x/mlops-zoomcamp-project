@@ -19,6 +19,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# .env's
+baseenv
+.env
+.env-terraform
+
 # C extensions
 *.so
 

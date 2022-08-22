@@ -71,7 +71,7 @@ def test_function_online():
     data_blob = data_bucket.blob("prediction.csv")
     first_date = data_blob
 
-    os.system("pipenv run python ../../clean-data.py")
+    os.system("cd ../../ && ./upload-files.sh")
 
     data_blob_new = data_bucket.blob("prediction.csv")
 
