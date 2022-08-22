@@ -22,7 +22,7 @@ repos:
         hooks:
         - id: pytest
           name: pytest
-          entry: pipenv run pytest -m offlinedata  -m offlinenodata
+          entry: pipenv run pytest -m "not online"
           language: system
           pass_filenames: false
           always_run: true
