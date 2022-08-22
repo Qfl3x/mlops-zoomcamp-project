@@ -1,8 +1,4 @@
-# Terraform provider files
-infrastructure/
-**/.terraform/
-
- MLflow Database
+# MLflow Database
 mlflow.db
 
 # GCP Credentials
