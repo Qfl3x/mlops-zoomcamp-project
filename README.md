@@ -57,6 +57,7 @@ Before running anything, it is necessary to manually setup certain parameters fo
 4. Create a `baseenv` file in the root directory. In it put 4 fields:
    + `GOOGLE_APPLICATION_CREDENTIALS`: The Absolute Path to the JSON key for the host account (Non-Terraform)
    + `GOOGLE_ACCOUNT_NAME`: email address of the host account
+   + `PROJECT_ID`: ID of the GCP Project
    + `REMOTE_IP`: (Optional) Remote IP of the server on which you're running MLFlow (Note: Prefect will need to be configured accordingly if the agent is running on a different host). If blank, will default to `localhost`
    + `SENDGRID_API_KEY`: (Optional) API key for SendGrid for automated email
    + `SENDGRID_INTEGRATION`: (Optional) Set as any value to skip the SendGrid automated email

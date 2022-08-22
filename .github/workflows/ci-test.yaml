@@ -32,6 +32,9 @@ jobs:
       - name: Setup credentials
         run: |
           echo  '${{ secrets.GCP_TERRAFORM_CREDENTIALS }}' > infrastructure/terraform-account.json
+      - name: Setup Baseenv
+        run: |
+          echo '${{ secrets.BASEENV }}' > baseenv
       - name: TF init
         id: init
         working-directory: "infrastructure"

@@ -16,6 +16,5 @@ build: data terraform dotenv
 	./upload-files.sh
 plan-prod:
 	cp baseenv infrastructure/.env
-	cd infrastructure && terraform init
 	cd infrastructure && ./terraform-plan-prod.sh
 # end
