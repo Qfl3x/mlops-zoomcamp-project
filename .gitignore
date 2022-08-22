@@ -22,7 +22,7 @@ __pycache__/
 # .env's
 baseenv
 .env
-.env-terraform
+terraformenv
 
 # C extensions
 *.so
