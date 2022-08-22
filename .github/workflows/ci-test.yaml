@@ -33,7 +33,7 @@ jobs:
         run: |
           echo  '${{ secrets.GCP_TERRAFORM_CREDENTIALS }}' > infrastructure/terraform-account.json
       - name: TF init
-        id: plan
+        id: init
         working-directory: "infrastructure"
         run: |
           terraform init -backend-config="prefix="tfstate-prod""
