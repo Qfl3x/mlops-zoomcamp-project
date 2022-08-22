@@ -14,8 +14,8 @@ dotenv:
 	./initiate_dotenvs.sh
 build: data terraform dotenv
 	./upload-files.sh
-apply:
+plan:
 	cp baseenv infrastructure/.env
 	cd infrastructure && terraform init
-	cd infrastructure ** ./terraform-apply.sh
+	cd infrastructure && ./terraform-plan.sh
 # end
