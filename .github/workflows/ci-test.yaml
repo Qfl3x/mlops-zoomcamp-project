@@ -37,12 +37,8 @@ jobs:
           echo '${{ secrets.BASEENV }}' > baseenv
       - name: TF init
         id: init
-        working-directory: "infrastructure"
         run: |
-          terraform init -backend-config="prefix="tfstate-prod""
+          cd infrastructure && terraform init -backend-config="prefix="tfstate-prod""
+          make plan-prod
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_TERRAFORM_CREDENTIALS}}
-      - name: TF plan
-        id: plan
-        run: |
-          make plan-prod
