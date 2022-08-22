@@ -1,3 +1,0 @@
-PROJECT_ID=mlops-zoomcamp-352510
-MODEL_BUCKET=terraform-mlops-project-churn-model-bucket
-DATA_BUCKET=terraform-mlops-project-churn-model-data
